@@ -109,4 +109,6 @@ linkList.addEventListener('click', (e) => {
       buildPage(9,e.target.textContent,data);
    }
 });
+
+
 buildPage(9,1,data);
