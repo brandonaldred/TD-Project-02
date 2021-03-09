@@ -2,22 +2,35 @@
 Treehouse Techdegree:
 FSJS Project 2 - Data Pagination and Filtering
 */
+
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
 
+const insertSearch = document.querySelector('.header');
+const label = document.createElement('LABEL');
+label.htmlFor = 'search';
+label.className = 'student-search';
+const searchSpan = document.createElement('SPAN');
+searchSpan.textContent = 'Search by Name';
+const searchInput = document.createElement('INPUT');
+searchInput.id = 'search';
+searchInput.placeholder = 'Search by name...';
+const searchButton = document.createElement('BUTTON');
+searchButton.type = 'button';
+const searchImg = document.createElement('IMG');
+searchImg.src = 'img/icn-search.svg';
+searchImg.alt = 'Search Icon';
+searchButton.appendChild(searchImg);
 
-/*
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-*/
+label.appendChild(searchSpan);
+label.appendChild(searchInput);
+label.appendChild(searchButton);
 
-console.log(data.length);
+insertSearch.appendChild(label);
 
-/*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
-*/
+
+
+
 
 function showPage(url, firstName, lastName, userEmail, joinDate) {
    const li = document.createElement('LI');
@@ -57,10 +70,6 @@ function showPage(url, firstName, lastName, userEmail, joinDate) {
    studentList.appendChild(li);
 }
 
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
 function addPagination(page,data) {
    const numPages = Math.ceil(data.length / 9);
    if (numPages > 1) {
@@ -77,8 +86,6 @@ function addPagination(page,data) {
       }
    }
 }
-
-buildPage(9,1,data);
 function buildPage (numToShow,pageNum,studentData) {
    const start = (pageNum - 1) * numToShow;
    const pageData = studentData;
@@ -102,3 +109,4 @@ linkList.addEventListener('click', (e) => {
       buildPage(9,e.target.textContent,data);
    }
 });
+buildPage(9,1,data);
