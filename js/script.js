@@ -119,7 +119,6 @@ searchInput.addEventListener('keydown', (e) => {
 
 //Function that preforms the search and pulls out the matching information and stores it in it's own array.
 function searchData(searchQuery) {
-   clearPage();
    searchData(searchInput.value);
    const searchResult = [];
    searchQuery = searchQuery.toLowerCase();
