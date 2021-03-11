@@ -76,8 +76,6 @@ function addPagination(page, data, numToShow) {
       //Add event listeners on the pagination items.
       linkList.addEventListener('click', (e) => {
          if (e.target.tagName === 'BUTTON') {
-            //Need to clear out the previous cards that were showing as you click through pages
-            clearPage();
             //Call the function to build page and add pagination with correct class depending on what page you're viewing.
             buildPage(numToShow, e.target.textContent, data);
          }
