@@ -29,7 +29,7 @@ function appendChild (parent,siblings) {
 }
 
 //Creating Search Bar (Not Using. Need to build out the logic)
-/*const insertSearch = document.querySelector('.header');
+const insertSearch = document.querySelector('.header');
 const label = buildElements('LABEL', {htmlFor: 'search', className: 'student-search'});
 const searchSpan = buildElements('SPAN',{textContent: 'Search by Name'});
 const searchInput = buildElements('INPUT', {id: 'search', placeholder: 'Search by name...'});
@@ -39,7 +39,7 @@ const searchImg = buildElements('IMG',{src: 'img/icn-search.svg', alt: 'Search I
 appendChild(searchButton,[searchImg]);
 appendChild(label,[searchSpan,searchInput,searchButton]);
 appendChild(insertSearch,[label]);
-*/
+
 
 //Build the card for the student data.
 function createCard(url, firstName, lastName, userEmail, joinDate) {
@@ -73,6 +73,16 @@ function addPagination(page, data, numToShow) {
          li.appendChild(button);
          linkList.appendChild(li);
       }
+
+      //Add event listeners on the pagination items.
+      linkList.addEventListener('click', (e) => {
+         if (e.target.tagName === 'BUTTON') {
+            //Need to clear out the previous cards that were showing as you click through pages
+            clearPage();
+            //Call the function to build page and add pagination with correct class depending on what page you're viewing.
+            buildPage(numToShow, e.target.textContent, data);
+         }
+      });
    }
 }
 
@@ -95,18 +105,46 @@ function buildPage(numToShow, pageNum, studentData) {
    //Add the pagination to the bottom of the page based on the information passed to the function.
    addPagination(pageNum, studentData, numToShow);
 }
+function clearPage() {
+      studentList.innerHTML = '';
+      linkList.innerHTML = '';
+}
+
+function search() {
+   clearPage();
+   const searchQuery = document.getElementById('search');
+   searchData(searchQuery.value);
+}
+
 
 //build out the page with default values
 buildPage(numToShow, currentPage, data);
 
+//Search Functionality
+searchButton.addEventListener('click', (e) => { search(); });
 
-//Add event listeners on the pagination items.
-linkList.addEventListener('click', (e) => {
-   if (e.target.tagName === 'BUTTON') {
-      //Need to clear out the previous cards that were showing as you click through pages
-      studentList.innerHTML = '';
-      linkList.innerHTML = '';
-      //Call the function to build page and add pagination with correct class depending on what page you're viewing.
-      buildPage(numToShow, e.target.textContent, data);
+searchInput.addEventListener('keydown', (e) => { 
+   if(e.keyCode === 13) {
+      search();
    }
 });
+
+function searchData(searchQuery) {
+   const searchResult = [];
+   searchQuery = searchQuery.toLowerCase();
+   for (let i = 0; i < data.length; i++) {
+      let student = data[i];
+      let firstName = student.name.first.toLowerCase();
+      let lastName = student.name.last.toLowerCase();
+      if(firstName.includes(searchQuery) || lastName.includes(searchQuery)) {
+         searchResult.push(student);
+      }
+   }
+   if (searchResult.length >= 1) {
+      buildPage(numToShow,currentPage,searchResult);
+   } else {
+      const resultLI = buildElements('LI',{textContent: 'No Results Found'});
+      appendChild(studentList,[resultLI]);
+   }
+}
+
