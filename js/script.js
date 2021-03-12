@@ -86,8 +86,7 @@ function addPagination(page, data, numToShow) {
 //Build out the actual page with the correct number of elements.
 function buildPage(numToShow, pageNum, studentData) {
    //Wipe out the current cards on the page 
-   studentList.innerHTML = '';
-   linkList.innerHTML = '';
+   clearPage();
    //Use page number to determine where in the data object the information should be pulled from.
    const start = (pageNum - 1) * numToShow;
    //Created a seperate array of objects to slice and dice. Not sure if this is the best approach.
@@ -106,20 +105,24 @@ function buildPage(numToShow, pageNum, studentData) {
    addPagination(pageNum, studentData, numToShow);
 }
 
+function clearPage() {
+   studentList.innerHTML = '';
+   linkList.innerHTML = '';
+}
+
 //build out the page with default values
 buildPage(numToShow, currentPage, data);
 
 //Search Functionality. Adding event linsteners for both an enter press or if the search button is clicked.
-searchButton.addEventListener('click', (e) => { searchData(); });
+searchButton.addEventListener('click', (e) => { searchData(searchInput.value); });
 searchInput.addEventListener('keydown', (e) => { 
    if(e.keyCode === 13) {
-      searchData();
+      searchData(searchInput.value);
    }
 });
 
 //Function that preforms the search and pulls out the matching information and stores it in it's own array.
 function searchData(searchQuery) {
-   searchData(searchInput.value);
    const searchResult = [];
    searchQuery = searchQuery.toLowerCase();
    for (let i = 0; i < data.length; i++) {
@@ -133,6 +136,7 @@ function searchData(searchQuery) {
    if (searchResult.length >= 1) {
       buildPage(numToShow,currentPage,searchResult);
    } else {
+      clearPage();
       const resultLI = buildElements('LI',{textContent: 'No Results Found'});
       appendChild(studentList,[resultLI]);
    }
