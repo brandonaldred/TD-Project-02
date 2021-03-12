@@ -7,6 +7,7 @@ FSJS Project 2 - Data Pagination and Filtering
 const numToShow = 9;
 const currentPage = 1;
 
+
 //Getting elements where the student list and link list will live, to insert new HTML into.
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
@@ -104,29 +105,31 @@ function buildPage(numToShow, pageNum, studentData) {
    //Add the pagination to the bottom of the page based on the information passed to the function.
    addPagination(pageNum, studentData, numToShow);
 }
-
-//A Function to wipe out the current cards on the page 
 function clearPage() {
       studentList.innerHTML = '';
       linkList.innerHTML = '';
 }
 
+function search() {
+   clearPage();
+   const searchQuery = document.getElementById('search');
+   searchData(searchQuery.value);
+}
+
+
 //build out the page with default values
 buildPage(numToShow, currentPage, data);
 
-//Search Functionality. Adding event linsteners for both an enter press or if the search button is clicked.
+//Search Functionality
 searchButton.addEventListener('click', (e) => { search(); });
+
 searchInput.addEventListener('keydown', (e) => { 
    if(e.keyCode === 13) {
       search();
    }
 });
 
-//Function that preforms the search and pulls out the matching information and stores it in it's own array.
 function searchData(searchQuery) {
-   clearPage();
-   const searchQuery = document.getElementById('search');
-   searchData(searchQuery.value);
    const searchResult = [];
    searchQuery = searchQuery.toLowerCase();
    for (let i = 0; i < data.length; i++) {
@@ -144,3 +147,4 @@ function searchData(searchQuery) {
       appendChild(studentList,[resultLI]);
    }
 }
+
