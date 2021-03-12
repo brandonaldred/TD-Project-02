@@ -7,7 +7,6 @@ FSJS Project 2 - Data Pagination and Filtering
 const numToShow = 9;
 const currentPage = 1;
 
-
 //Getting elements where the student list and link list will live, to insert new HTML into.
 const studentList = document.querySelector('.student-list');
 const linkList = document.querySelector('.link-list');
@@ -77,8 +76,6 @@ function addPagination(page, data, numToShow) {
       //Add event listeners on the pagination items.
       linkList.addEventListener('click', (e) => {
          if (e.target.tagName === 'BUTTON') {
-            //Need to clear out the previous cards that were showing as you click through pages
-            clearPage();
             //Call the function to build page and add pagination with correct class depending on what page you're viewing.
             buildPage(numToShow, e.target.textContent, data);
          }
@@ -88,6 +85,9 @@ function addPagination(page, data, numToShow) {
 
 //Build out the actual page with the correct number of elements.
 function buildPage(numToShow, pageNum, studentData) {
+   //Wipe out the current cards on the page 
+   studentList.innerHTML = '';
+   linkList.innerHTML = '';
    //Use page number to determine where in the data object the information should be pulled from.
    const start = (pageNum - 1) * numToShow;
    //Created a seperate array of objects to slice and dice. Not sure if this is the best approach.
@@ -105,31 +105,21 @@ function buildPage(numToShow, pageNum, studentData) {
    //Add the pagination to the bottom of the page based on the information passed to the function.
    addPagination(pageNum, studentData, numToShow);
 }
-function clearPage() {
-      studentList.innerHTML = '';
-      linkList.innerHTML = '';
-}
-
-function search() {
-   clearPage();
-   const searchQuery = document.getElementById('search');
-   searchData(searchQuery.value);
-}
-
 
 //build out the page with default values
 buildPage(numToShow, currentPage, data);
 
-//Search Functionality
-searchButton.addEventListener('click', (e) => { search(); });
-
+//Search Functionality. Adding event linsteners for both an enter press or if the search button is clicked.
+searchButton.addEventListener('click', (e) => { searchData(); });
 searchInput.addEventListener('keydown', (e) => { 
    if(e.keyCode === 13) {
-      search();
+      searchData();
    }
 });
 
+//Function that preforms the search and pulls out the matching information and stores it in it's own array.
 function searchData(searchQuery) {
+   searchData(searchInput.value);
    const searchResult = [];
    searchQuery = searchQuery.toLowerCase();
    for (let i = 0; i < data.length; i++) {
@@ -147,4 +137,3 @@ function searchData(searchQuery) {
       appendChild(studentList,[resultLI]);
    }
 }
-
